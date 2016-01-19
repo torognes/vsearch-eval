@@ -16,4 +16,5 @@ for org in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14; do
 
     done
 
-fi
+done
+
