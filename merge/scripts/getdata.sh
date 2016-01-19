@@ -4,10 +4,16 @@ mkdir -p data
 
 cd data
 
-if [ ! -e frag_1.fastq.gz ]; then
-    wget http://gage.cbcb.umd.edu/data/Staphylococcus_aureus/Data.original/frag_1.fastq.gz
-fi
+for org in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14; do
+    
+    for strand in 1 2; do
+        
+        F=$org.frag_$strand.fastq.gz
 
-if [ ! -e frag_2.fastq.gz ]; then
-    wget http://gage.cbcb.umd.edu/data/Staphylococcus_aureus/Data.original/frag_2.fastq.gz
+        if [ ! -e $F ]; then
+            wget -O $F http://gage.cbcb.umd.edu/data/$org/Data.original/frag_$strand.fastq.gz
+        fi
+
+    done
+
 fi
