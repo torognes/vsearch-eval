@@ -19,3 +19,7 @@ cd ..
 cd subsample
 ./scripts/both.sh
 cd ..
+
+cd merge
+./scripts/merge.sh
+cd ..
