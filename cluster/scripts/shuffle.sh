@@ -1,5 +1,6 @@
 #!/bin/bash
 
+THREADS=8
 REPLICATES=10
 
 for i in $(seq -w $REPLICATES); do
@@ -10,7 +11,7 @@ for i in $(seq -w $REPLICATES); do
 
         if [ ! -e $OUT ]; then
 
-            vsearch --shuffle results/$M/$M.derep.fasta --output $OUT --randseed $i
+            vsearch --shuffle results/$M/$M.derep.fasta --output $OUT --randseed $i --threads $THREADS
 
         fi
 

@@ -54,6 +54,8 @@ case $P in
         
         # remove duplicate hits, calc query coverage and remove if too low
         scripts/blastfilter.pl $DIR/blastout.txt > $DIR/userout.$P.txt
+
+        rm $DIR/blastout.txt
         
         ;;
     
@@ -86,4 +88,4 @@ GOLD=$(grep -c "^>" $DIR/qq.fsa)
 
 ./scripts/stats.pl $GOLD $DIR/sortout.$P.txt $DIR/curve.$P.txt
 
-rm $DIR/temp.fsa $DIR/q.fsa $DIR/qq.fsa $DIR/db.fsa $DIR/userout.$P.txt
+rm $DIR/userout.$P.txt $DIR/sortout.$P.txt

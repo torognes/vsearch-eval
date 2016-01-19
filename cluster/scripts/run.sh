@@ -1,5 +1,7 @@
 #!/bin/bash
 
+THREADS=8
+
 ID_MIN=80
 ID_STEP=1
 ID_MAX=99
@@ -18,7 +20,7 @@ for M in even uneven; do
 
                     echo Clustering with $P at id $ID on $F
 
-                    $P --cluster_fast $F --id 0.$ID --uc $UC
+                    /usr/bin/time $P --cluster_fast $F --id 0.$ID --uc $UC --threads $THREADS
 
                 fi
 
@@ -28,9 +30,15 @@ for M in even uneven; do
 
                     echo Clustering with $P at id $ID on $F
 
-                    $P --sortbysize $F --sizein --sizeout --output results/$M/temp.fasta
+                    if [ $P == "v" ]; then
+                        THROPT="--threads $THREADS"
+                    else
+                        THROPT=""
+                    fi
 
-                    $P --cluster_smallmem results/$M/temp.fasta --usersort --id 0.$ID --uc $UC
+                    /usr/bin/time $P --sortbysize $F --sizein --sizeout --output results/$M/temp.fasta $THROPT
+
+                    /usr/bin/time $P --cluster_smallmem results/$M/temp.fasta --usersort --id 0.$ID --uc $UC $THROPT
 
                     rm results/$M/temp.fasta
                 

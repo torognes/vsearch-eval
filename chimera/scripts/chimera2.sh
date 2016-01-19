@@ -5,7 +5,7 @@ DB=$DIR/simm_sp.fa
 RES=results
 OUT=$RES/chimeval.txt
 
-THREADS=0
+THREADS=8
 
 UCHIME=$(which uchime)
 USEARCH=$(which usearch)
@@ -39,9 +39,10 @@ for t in - m1 m2 m3 m4 m5 i1 i2 i3 i4 i5; do
 
     $UCHIME --input $INPUT --db $DB --uchimeout $RES/o.$t.uchimeout --minh 0.28 --mindiv 0.8 ; grep Y$ $RES/o.$t.uchimeout | cut -f2 > $RES/o.$t.chimeras
 
-    $VSEARCH --uchime_ref $INPUT --db $DB --chimeras $RES/v.$t.chimeras --wordlength 8 --minwordmatches 11
+    $VSEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/v.$t.chimeras --threads $THREADS
 
-    $USEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u.$t.chimeras
+    $USEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u.$t.chimeras --threads $THREADS
+
 
 done
 

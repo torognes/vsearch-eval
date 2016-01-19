@@ -3,6 +3,8 @@
 USEARCH=$(which usearch)
 VSEARCH=$(which vsearch)
 
+THREADS=8
+
 echo Create folders
 
 mkdir -p data results/clust results/derep
@@ -29,6 +31,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
 
                 ${USEARCH} --cluster_fast data/$D.fa --id 0.95 \
                     --sizeout \
+                    --threads $THREADS \
                     --centroids results/$n/${D}_clust.fa
                 
             fi
@@ -41,6 +44,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
 
                 ${USEARCH} --derep_fulllength data/$D.fa \
                     --sizeout \
+                    --threads $THREADS \
                     --output results/$n/${D}_derep.fa
                 
             fi
@@ -66,15 +70,25 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
 
                     if [ $m == "dn" ]; then
                         
-                        $PROG --uchime_denovo results/$n/${D}_${n}.fa \
+                        if [ $P == "vsearch" ]; then
+                            THROPT="--threads $THREADS"
+                        else
+                            THROPT=""
+                        fi
+                        
+                        /usr/bin/time \
+                            $PROG --uchime_denovo results/$n/${D}_${n}.fa \
                             --strand plus \
-                            --uchimeout $RES
+                            --uchimeout $RES \
+                            $THROPT
                         
                     else
                         
-                        $PROG --uchime_ref results/$n/${D}_${n}.fa \
+                        /usr/bin/time \
+                            $PROG --uchime_ref results/$n/${D}_${n}.fa \
                             --strand plus \
                             --db data/$REF \
+                            --threads $THREADS \
                             --uchimeout $RES
                         
                     fi
