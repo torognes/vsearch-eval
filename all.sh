@@ -1,7 +1,4 @@
-#!/bin/bash
-
-module load R
-export OMP_NUM_THREADS=8
+#!/bin/sh
 
 cd search
 ./scripts/search.sh
@@ -17,7 +14,7 @@ cd cluster
 cd ..
 
 cd subsample
-./scripts/both.sh
+./scripts/subsample.sh
 cd ..
 
 cd merge

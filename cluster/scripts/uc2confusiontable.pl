@@ -10,7 +10,7 @@ my $ucfilename = $ARGV[1];
 
 my %taxa;
 my %amp2tax;
-my @cluster;
+my %cluster;
 
 open T, $taxfilename;
 while (<T>)
@@ -42,12 +42,12 @@ while (<UC>)
 
     if ($linetype eq "S")
     {
-        $cluster[$clusterid]{$tax} = $abundance;
+        $cluster{$clusterid}{$tax} = $abundance;
     }
 
     if ($linetype eq "H")
     {
-        $cluster[$clusterid]{$tax} += $abundance;
+        $cluster{$clusterid}{$tax} += $abundance;
     }
 }
 close UC;
@@ -61,12 +61,12 @@ for my $tax (@alltax)
 }
 print "\n";
 
-for my $clusterid (keys @cluster)
+for my $clusterid (sort {$a <=> $b} keys %cluster)
 {
     print $clusterid + 1;
     for my $tax (@alltax)
     {
-        my $count = $cluster[$clusterid]{$tax};
+        my $count = $cluster{$clusterid}{$tax};
         $count = 0 if ! defined $count;
         print "\t$count";
     }

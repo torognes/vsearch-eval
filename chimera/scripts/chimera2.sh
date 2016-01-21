@@ -37,35 +37,44 @@ for t in - m1 m2 m3 m4 m5 i1 i2 i3 i4 i5; do
         INPUT=$DIR/simm.$t.fa
     fi
 
-    $UCHIME --input $INPUT --db $DB --uchimeout $RES/o.$t.uchimeout --minh 0.28 --mindiv 0.8 ; grep Y$ $RES/o.$t.uchimeout | cut -f2 > $RES/o.$t.chimeras
+    if [ ! -e o.$t.chimeras ]; then
+        $UCHIME --input $INPUT --db $DB --uchimeout $RES/o.$t.uchimeout --minh 0.28 --mindiv 0.8 ; grep Y$ $RES/o.$t.uchimeout | cut -f2 > $RES/o.$t.chimeras
+    fi
 
-    $VSEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/v.$t.chimeras --threads $THREADS
+    if [ ! -e v.$t.chimeras ]; then
+        $VSEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/v.$t.chimeras --threads $THREADS
+    fi
 
-    $USEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u.$t.chimeras --threads $THREADS
-
+    if [ ! -e u.$t.chimeras ]; then
+        $USEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u.$t.chimeras --threads $THREADS
+    fi
 
 done
 
 echo
-echo -e  "\t__________m=2__________\t__________m=3__________\t__________m=4__________" > $OUT
-echo -ne "Div/Evo\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
-echo -ne "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
-echo -e  "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
 
-for r in 97_99 95_97 90_95; do
-    for t in - i1 i2 i3 i4 i5 m1 m2 m3 m4 m5; do
-        EXT="$t.chimeras"
-        echo -ne "$r$t" >> $OUT
-        for m in 2 3 4; do
-            echo -ne "\t$(grep -c _m${m}_${r} $RES/u.$EXT)" >> $OUT
-            echo -ne "\t$(grep -c _m${m}_${r} $RES/o.$EXT)" >> $OUT
-            echo -ne "\t$(grep -c _m${m}_${r} $RES/v.$EXT)" >> $OUT
+if [ ! -e $OUT ]; then
+
+    echo -e  "\t__________m=2__________\t__________m=3__________\t__________m=4__________" > $OUT
+    echo -ne "Div/Evo\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
+    echo -ne "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
+    echo -e  "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
+
+    for r in 97_99 95_97 90_95; do
+        for t in - i1 i2 i3 i4 i5 m1 m2 m3 m4 m5; do
+            EXT="$t.chimeras"
+            echo -ne "$r$t" >> $OUT
+            for m in 2 3 4; do
+                echo -ne "\t$(grep -c _m${m}_${r} $RES/u.$EXT)" >> $OUT
+                echo -ne "\t$(grep -c _m${m}_${r} $RES/o.$EXT)" >> $OUT
+                echo -ne "\t$(grep -c _m${m}_${r} $RES/v.$EXT)" >> $OUT
+            done
+            echo >> $OUT
         done
         echo >> $OUT
     done
-    echo >> $OUT
-done
+fi
 
-rm -f $RES/o.* $RES/u.* $RES/v.*
+#rm -f $RES/o.* $RES/u.* $RES/v.*
 
 echo Done

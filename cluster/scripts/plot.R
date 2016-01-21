@@ -1,3 +1,4 @@
+library(methods)
 library(ggplot2)
 library(reshape)
 
@@ -33,7 +34,7 @@ ggplot(d5, aes(x = id, y = value, col = program )) +
         labs(x = "identity (%)", y = "metric value") +
         facet_grid(metric ~ order, scales = "free_y", space = "fixed") +
         scale_x_continuous(breaks = seq(81, 99, by = 2)) +
-        scale_colour_hue(l=60, c=150, h.start = 270) +
+#        scale_colour_hue(l=60, c=150, h.start = 270) +
         theme(legend.position = c(0.9, 0.1), legend.title=element_blank())
 
 ggsave(file = "clustering_metrics_medians.pdf", width=10, height=8)
@@ -56,7 +57,7 @@ ggplot(d6, aes(x = id, y = value, col = program )) +
         facet_grid(. ~ order, scales = "free_y", space = "fixed") +
         scale_x_continuous(breaks = seq(81, 99, by = 2)) +
         scale_y_continuous(trans = "log10") +
-        scale_colour_hue(l=60, c=150, h.start = 270) +
+#        scale_colour_hue(l=60, c=150, h.start = 270) +
         theme(legend.position = c(0.9, 0.1), legend.title=element_blank())
 
 ggsave(file = "clustering_clustercount_medians.pdf", width=10, height=5)

@@ -36,7 +36,7 @@ for(f in fractions)
   i <- i + 1
 }
 
-pdf(out, 8.5, 11.0)
+pdf(out, 8.0, 11.0)
 
 do.call(grid.arrange, c(plist, list(ncol=1)))
 
