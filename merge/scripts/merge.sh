@@ -1,14 +1,37 @@
 #!/bin/bash
 
-./scripts/getdata.sh
+./scripts/download.sh
+
+THREADS=8
+MINOVLEN=10
+MAXDIFFS=5
+MINHSP=16
 
 mkdir -p results
 
-for org in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14; do
+for name in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14 mcbath; do
 
-    for p in usearch vsearch; do
+    for P in usearch vsearch; do
         
-        /usr/bin/time $P --fastq_mergepairs data/$org.frag_1.fastq.gz --reverse data/$org.frag_2.fastq.gz --fastqout results/$org.merged.fastq -fastq_qmin 0 -fastq_qmax 40 -fastq_ascii 33 --fastq_minovlen 10 --fastq_maxdiffs 5
+        R1=data/${name}_1.fastq
+        R2=data/${name}_2.fastq
+        F=results/$name.merged.$P.fastq
+
+        if [ $P == usearch ]; then
+            EXTRA="--minhsp $MINHSP"
+        else
+            EXTRA=""
+        fi
+
+        if [ ! -e $F ]; then
+
+            echo Merging $name with $P
+
+            /usr/bin/time $P \
+                --fastq_mergepairs $R1 --reverse $R2 --fastqout $F \
+                --fastq_minovlen $MINOVLEN --fastq_maxdiffs $MAXDIFFS \
+                --threads $THREADS $EXTRA
+        fi
 
     done
 
