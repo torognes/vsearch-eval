@@ -32,7 +32,8 @@ for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
                 
                 $cmd
                 
-                cp -a $G.assembled.fastq $F
+                mv $G.assembled.fastq $F
+                rm $G.*
                 
             else
                 
