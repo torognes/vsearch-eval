@@ -1,7 +1,7 @@
 # vsearch-eval
 Scripts and data for evaluation of VSEARCH performance
 
-# Required software
+## Required software
 
 * VSEARCH (accessible as vsearch)
 * USEARCH version 7 (usearch)
