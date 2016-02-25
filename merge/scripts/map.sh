@@ -6,7 +6,7 @@ cd data
 
 
 
-for REF in GCA_000017085.1_ASM1708v1_genomic.fna.gz GCA_000273405.1_Rhod_Spha_2_4_1_V1_genomic.fna.gz mcbath.ref.fasta; do
+for REF in GCA_000017085.1_ASM1708v1_genomic.fna.gz GCA_000273405.1_Rhod_Spha_2_4_1_V1_genomic.fna.gz mcbath.v3.ref.fasta; do
     if [ ! -e $REF.sa ]; then
         bwa index $REF
     fi
@@ -22,17 +22,22 @@ rm -f results.txt
 
 OPT="-t $THREADS -w 1 -O 50,50 -E 50,50 -L 50,50"
 
-for name in Staphylococcus_aureus mcbath Rhodobacter_sphaeroides; do
+for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
 
-    if [ $name == mcbath ]; then
-        REF=mcbath.ref.fasta
-    else
-        if [ $name == Rhodobacter_sphaeroides ]; then
+    case $name in
+
+        mcbath)
+            REF=mcbath.v3.ref.fasta
+            ;;
+
+        Rhodobacter_sphaeroides)
             REF=GCA_000273405.1_Rhod_Spha_2_4_1_V1_genomic.fna.gz
-        else
+            ;;
+
+        Staphylococcus_aureus)
             REF=GCA_000017085.1_ASM1708v1_genomic.fna.gz
-        fi
-    fi
+            ;;
+    esac
 
     for P in usearch usearch8 vsearch PEAR; do
         OUT=$name.merged.$P.$REF.sam

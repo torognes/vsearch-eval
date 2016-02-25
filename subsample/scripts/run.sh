@@ -8,13 +8,12 @@ mkdir -p results
 BASE=BioMarKs
 DATA=data/$BASE.fsa.gz
 RES=results/$BASE.subsample.tsv
+REPLICATES=100
 
 echo -e "fraction\tprogram\tabundance" > $RES
 for f in 0.5 1.5 2.5 5.0; do
-#    for n in $(seq 1 1000); do
-    for n in $(seq 1 100); do
-#        for p in usearch vsearch; do
-        for p in vsearch; do
+    for n in $(seq 1 $REPLICATES); do
+        for p in usearch8 vsearch; do
             
             $p --fastx_subsample $DATA \
                 --sample_pct $f \
