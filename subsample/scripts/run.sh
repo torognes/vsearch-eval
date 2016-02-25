@@ -6,9 +6,12 @@ mkdir -p results
 
 #BASE=TARA_V9_264_samples
 BASE=BioMarKs
-DATA=data/$BASE.fsa.gz
+DATAGZ=data/$BASE.fsa.gz
+DATA=data/$BASE.fsa
 RES=results/$BASE.subsample.tsv
 REPLICATES=100
+
+gunzip -c -d $DATAGZ > $DATA
 
 echo -e "fraction\tprogram\tabundance" > $RES
 for f in 0.5 1.5 2.5 5.0; do
