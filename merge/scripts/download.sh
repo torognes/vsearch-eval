@@ -4,20 +4,25 @@ mkdir -p data
 
 cd data
 
-# Get Staph. aureus reference genome
+# Get Staphylococcus aureus reference genome, strain USA300_TCH1516
 
-# Assembly of M0927 strain
-# ftp://ftp.ensemblgenomes.org/pub/bacteria/release-30/fasta/bacteria_29_collection/staphylococcus_aureus_m0927/dna/Staphylococcus_aureus_m0927.GCA_000362205.1.30.dna.genome.fa.gz
+ASM=GCA_000017085.1_ASM1708v1
+URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/all/$ASM/${ASM}_genomic.fna.gz
 
-# Complete reference strain NCTC 8325
-STAAU_REF=GCA_000013425.1_ASM1342v1_genomic.fna.gz
-STAAU_URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000013425.1_ASM1342v1/$STAAU_REF
-
-if [ ! -e $STAAU_REF ]; then
-    wget -nv $STAAU_URL
+if [ ! -e ${ASM}_genomic.fna.gz ]; then
+    wget -nv $URL
 fi
 
-# Get data from GAGE-B
+# Get Rhodobacter sphaeroides reference genome, strain 1.2.4
+
+ASM=GCA_000273405.1_Rhod_Spha_2_4_1_V1
+URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/all/$ASM/${ASM}_genomic.fna.gz
+
+if [ ! -e ${ASM}_genomic.fna.gz ]; then
+    wget -nv $URL
+fi
+
+# Get reads from GAGE-B
 
 for name in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14; do
     for strand in 1 2; do

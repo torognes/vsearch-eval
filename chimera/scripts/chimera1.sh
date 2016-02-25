@@ -18,7 +18,6 @@ if [ ! -e data/$REF ]; then
 fi
 
 
-#for D in SILVA_Illumina GG_Illumina; do
 for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
 
     for n in clust derep; do
@@ -70,7 +69,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
 
                     if [ $m == "dn" ]; then
                         
-                        if [ $P == "vsearch" ]; then
+                        if [ $p == "vsearch" ]; then
                             THROPT="--threads $THREADS"
                         else
                             THROPT=""
