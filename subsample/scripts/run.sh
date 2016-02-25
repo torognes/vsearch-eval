@@ -14,7 +14,7 @@ REPLICATES=100
 gunzip -c -d $DATAGZ > $DATA
 
 echo -e "fraction\tprogram\tabundance" > $RES
-for f in 0.5 1.5 2.5 5.0; do
+for f in 1.0 1.5 2.5 5.0; do
     for n in $(seq 1 $REPLICATES); do
         for p in usearch8 vsearch; do
             
