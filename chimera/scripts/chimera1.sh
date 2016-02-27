@@ -2,25 +2,25 @@
 
 USEARCH=$(which usearch)
 VSEARCH=$(which vsearch)
+THREADS=2
 
-THREADS=8
+cd ./chimera/
 
 echo Create folders
+mkdir -p ./data ./results/{clust,derep}
 
-mkdir -p data results/clust results/derep
-
-
-REF=gold.fa
-
-if [ ! -e data/$REF ]; then
-    echo Downloading reference database
-    wget -O data/gold.fa http://drive5.com/uchime/gold.fa
+## Get reference sequences
+REF="gold.fa"
+MD5="18cc0f774372410eccd6d64c97a2d297"
+check_status=$(cd ./data/ ; md5sum --status -c <<< "${MD5} ${REF}" ; echo $?)
+if [[ ! -e ./data/$REF || ${check_status} != 0 ]] ; then
+    echo "Downloading reference database"
+    wget -O ./data/${REF} http://drive5.com/uchime/${REF}
 fi
 
+for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
 
-for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
-
-    for n in clust derep; do
+    for n in clust derep ; do
         
         if [ $n == "clust" ]; then
             
@@ -28,7 +28,9 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
                 
                 echo Clustering 
 
-                ${USEARCH} --cluster_fast data/$D.fa --id 0.95 \
+                ${USEARCH} \
+                    --cluster_fast data/$D.fa \
+                    --id 0.95 \
                     --sizeout \
                     --threads $THREADS \
                     --centroids results/$n/${D}_clust.fa
@@ -41,7 +43,8 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
                 
                 echo Dereplicating
 
-                ${USEARCH} --derep_fulllength data/$D.fa \
+                ${USEARCH} \
+                    --derep_fulllength data/$D.fa \
                     --sizeout \
                     --threads $THREADS \
                     --output results/$n/${D}_derep.fa
@@ -118,3 +121,5 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree; do
 done
 
 echo Done
+
+exit 0
