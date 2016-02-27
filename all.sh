@@ -1,22 +1,18 @@
-#!/bin/bash
+#!/bin/bash -
 
-cd search
-./scripts/search.sh
-cd ..
+## Check for dependencies first
+list="vsearch usearch usearch8 uchime pear bwa R perl wget awk bzip2 gzip"
+for dependency in ${list} ; do
+    if [[ ! $(which ${dependency}) ]] ; then
+        echo "ERROR: could not find ${dependency}" 1>&2
+        exit 1
+    fi
+done
 
-cd chimera
-./scripts/chimera1.sh
-./scripts/chimera2.sh
-cd ..
+## Run all tests
+for script in ./*/scripts/*.sh ; do
+    echo "Run $(basename $script)"
+    bash "${script}"
+done
 
-cd cluster
-./scripts/cluster.sh
-cd ..
-
-cd subsample
-./scripts/subsample.sh
-cd ..
-
-cd merge
-./scripts/merge.sh
-cd ..
+exit 0
