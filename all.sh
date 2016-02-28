@@ -11,8 +11,8 @@ done
 
 ## Run all tests
 for script in ./*/scripts/*.sh ; do
-    echo "Run $(basename $script)"
-    bash "${script}"
+    echo "Run $(basename ${script})"
+    (cd ${script/scripts*/} ; bash ${script/*scripts/\.\/scripts})
 done
 
 exit 0
