@@ -2,6 +2,7 @@
 
 mkdir -p data
 
+## should we consider switching to Rfam 12 (27/01/2015)?
 if [ ! -e data/Rfam_11_0.fasta ]; then
     
     cd data
