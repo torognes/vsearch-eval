@@ -4,8 +4,6 @@ USEARCH=$(which usearch)
 VSEARCH=$(which vsearch)
 THREADS=2
 
-cd ./chimera/
-
 echo Create folders
 mkdir -p ./data ./results/{clust,derep}
 
