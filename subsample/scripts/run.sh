@@ -10,6 +10,7 @@ DATAGZ=data/$BASE.fsa.gz
 DATA=data/$BASE.fsa
 RES=results/$BASE.subsample.tsv
 REPLICATES=100
+SEED=1
 
 if [ ! -e $DATA ]; then
     gunzip -c -d $DATAGZ > $DATA
@@ -24,6 +25,7 @@ if [ ! -e $RES ]; then
             for p in usearch8 vsearch; do
 
                 $p --fastx_subsample $DATA \
+                    --randseed $SEED
                     --sample_pct $f \
                     --sizein \
                     --sizeout \
