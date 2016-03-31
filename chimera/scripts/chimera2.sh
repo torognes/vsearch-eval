@@ -9,6 +9,7 @@ THREADS=8
 
 UCHIME=$(which uchime)
 USEARCH=$(which usearch)
+USEARCH8=$(which usearch8)
 VSEARCH=$(which vsearch)
 
 # uchime must be preinstalled
@@ -54,15 +55,23 @@ for t in - m1 m2 m3 m4 m5 i1 i2 i3 i4 i5; do
         $USEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u.$t.chimeras --threads $THREADS
     fi
 
+    if [ ! -e $RES/u8.$t.chimeras ]; then
+        echo
+        echo Running usearch8 on dataset $t
+        echo
+        $USEARCH8 --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u8.$t.chimeras --threads $THREADS
+    fi
+
 done
 
 if [ ! -e $OUT ]; then
 
     echo
-    echo -e  "\t__________m=2__________\t__________m=3__________\t__________m=4__________" > $OUT
-    echo -ne "Div/Evo\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
-    echo -ne "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
-    echo -e  "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
+    echo -e  "\t______________m=2______________\t______________m=3______________\t______________m=4______________" > $OUT
+    echo -ne "Div/Evo" >> $OUT
+    echo -ne "\tUSEARCH\tUSEARC8\tUCHIME\tVSEARCH" >> $OUT
+    echo -ne "\tUSEARCH\tUSEARC8\tUCHIME\tVSEARCH" >> $OUT
+    echo -e  "\tUSEARCH\tUSEARC8\tUCHIME\tVSEARCH" >> $OUT
 
     for r in 97_99 95_97 90_95; do
         for t in - i1 i2 i3 i4 i5 m1 m2 m3 m4 m5; do
@@ -70,6 +79,7 @@ if [ ! -e $OUT ]; then
             echo -ne "$r$t" >> $OUT
             for m in 2 3 4; do
                 echo -ne "\t$(grep -c _m${m}_${r} $RES/u.$EXT)" >> $OUT
+                echo -ne "\t$(grep -c _m${m}_${r} $RES/u8.$EXT)" >> $OUT
                 echo -ne "\t$(grep -c _m${m}_${r} $RES/o.$EXT)" >> $OUT
                 echo -ne "\t$(grep -c _m${m}_${r} $RES/v.$EXT)" >> $OUT
             done
@@ -79,6 +89,6 @@ if [ ! -e $OUT ]; then
     done
 fi
 
-#rm -f $RES/o.* $RES/u.* $RES/v.*
+#rm -f $RES/o.* $RES/u.* $RES/u8.* $RES/v.*
 
 echo Done

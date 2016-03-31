@@ -1,7 +1,5 @@
 #!/bin/bash
 
-USEARCH=$(which usearch)
-VSEARCH=$(which vsearch)
 THREADS=2
 
 echo Create folders
@@ -26,7 +24,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                 
                 echo Clustering 
 
-                ${USEARCH} \
+                usearch \
                     --cluster_fast data/$D.fa \
                     --id 0.95 \
                     --sizeout \
@@ -41,7 +39,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                 
                 echo Dereplicating
 
-                ${USEARCH} \
+                usearch \
                     --derep_fulllength data/$D.fa \
                     --sizeout \
                     --threads $THREADS \
@@ -53,13 +51,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
 
         for m in dn ref; do
 
-            for p in usearch vsearch; do
-                
-                if [ $p == "usearch" ]; then
-                    PROG=$USEARCH
-                else
-                    PROG=$VSEARCH
-                fi
+            for p in usearch usearch8 vsearch; do
 
                 echo Chimera detection with $p using $m and $n
 
@@ -77,7 +69,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                         fi
                         
                         /usr/bin/time \
-                            $PROG --uchime_denovo results/$n/${D}_${n}.fa \
+                            $p --uchime_denovo results/$n/${D}_${n}.fa \
                             --strand plus \
                             --uchimeout $RES \
                             $THROPT
@@ -85,7 +77,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                     else
                         
                         /usr/bin/time \
-                            $PROG --uchime_ref results/$n/${D}_${n}.fa \
+                            $p --uchime_ref results/$n/${D}_${n}.fa \
                             --strand plus \
                             --db data/$REF \
                             --threads $THREADS \
@@ -96,7 +88,11 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                 fi
                 
                 if [ ! -e $BASE.sorteduchime ]; then
-                    sort -nr -k1 -k17 $RES | cut -f2,18 > $BASE.sorteduchime
+                    if [ $p == "usearch8" ]; then
+                        sort -nr -k1 -k16 $RES | cut -f2,17 > $BASE.sorteduchime
+                    else
+                        sort -nr -k1 -k17 $RES | cut -f2,18 > $BASE.sorteduchime
+                    fi
                 fi
 
                 if [ ! -e $BASE.roc ]; then

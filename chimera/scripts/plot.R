@@ -12,7 +12,7 @@ z <- NULL
 
 for(pre in c("derep", "clust"))
 {
-  for (program in c("usearch", "vsearch"))
+  for (program in c("usearch", "usearch8", "vsearch"))
   {
     for(algo in c("dn", "ref"))
     {
