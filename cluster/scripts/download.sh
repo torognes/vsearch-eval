@@ -2,19 +2,15 @@
 
 mkdir -p data
 
+cd data
+
 for M in even uneven; do
 
-    mkdir -p data/$M
-
-    if [ ! -e data/$M/$M.fasta.bz2 ]; then
-
-        cd data/$M
+    if [ ! -e $M.fasta.bz2 ]; then
 
         echo Downloading dataset $M
 
         wget http://sbr2.sb-roscoff.fr/download/externe/de/fmahe/$M.fasta.bz2
-
-        cd ../..
 
     fi
 
