@@ -27,34 +27,38 @@ fi
 
 for t in - m1 m2 m3 m4 m5 i1 i2 i3 i4 i5; do
 
-    echo
-    echo Running programs on dataset $t
-    echo
-
     if [ "$t" == "-" ]; then
         INPUT=$DIR/simm.fa
     else
         INPUT=$DIR/simm.$t.fa
     fi
 
-    if [ ! -e o.$t.chimeras ]; then
+    if [ ! -e $RES/o.$t.chimeras ]; then
+        echo
+        echo Running uchime on dataset $t
+        echo
         $UCHIME --input $INPUT --db $DB --uchimeout $RES/o.$t.uchimeout --minh 0.28 --mindiv 0.8 ; grep Y$ $RES/o.$t.uchimeout | cut -f2 > $RES/o.$t.chimeras
     fi
 
-    if [ ! -e v.$t.chimeras ]; then
+    if [ ! -e $RES/v.$t.chimeras ]; then
+        echo
+        echo Running vsearch on dataset $t
+        echo
         $VSEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/v.$t.chimeras --threads $THREADS
     fi
 
-    if [ ! -e u.$t.chimeras ]; then
+    if [ ! -e $RES/u.$t.chimeras ]; then
+        echo
+        echo Running usearch on dataset $t
+        echo
         $USEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u.$t.chimeras --threads $THREADS
     fi
 
 done
 
-echo
-
 if [ ! -e $OUT ]; then
 
+    echo
     echo -e  "\t__________m=2__________\t__________m=3__________\t__________m=4__________" > $OUT
     echo -ne "Div/Evo\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
     echo -ne "\tUSEARCH\tUCHIME\tVSEARCH" >> $OUT
