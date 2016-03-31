@@ -24,6 +24,11 @@ VSEARCH=$(which vsearch)
 DESCRIPTION="check if vsearch is in the PATH"
 [[ "${VSEARCH}" ]] && success "${DESCRIPTION}" || failure "${DESCRIPTION}"
 
+## Is usearch (7) installed?
+USEARCH=$(which usearch)
+DESCRIPTION="check if usearch is in the PATH"
+[[ "${USEARCH}" ]] && success "${DESCRIPTION}" || failure "${DESCRIPTION}"
+
 ## Is usearch8 installed?
 USEARCH8=$(which usearch8)
 DESCRIPTION="check if usearch8 is in the PATH"
@@ -62,6 +67,26 @@ find . -name "error*.fastq" -print | \
     while read f ; do
         DESCRIPTION="vsearch: $(basename ${f}) is an invalid file"
         "${VSEARCH}" --fastq_chars "${f}" 2> /dev/null > /dev/null && \
+            failure "${DESCRIPTION}" || \
+                success  "${DESCRIPTION}"
+    done
+
+# -------------------------------------------------------------------- usearch
+
+## Return status should be zero (success)
+find . -name "*.fastq" ! -name "error*" -print | \
+    while read f ; do
+        DESCRIPTION="usearch: $(basename ${f}) is a valid file"
+        "${USEARCH}" -fastq_chars "${f}" 2> /dev/null > /dev/null && \
+            success  "${DESCRIPTION}" || \
+                failure "${DESCRIPTION}"
+    done
+
+## Return status should be !zero (failure)
+find . -name "error*.fastq" -print | \
+    while read f ; do
+        DESCRIPTION="usearch: $(basename ${f}) is an invalid file"
+        "${USEARCH}" -fastq_chars "${f}" 2> /dev/null > /dev/null && \
             failure "${DESCRIPTION}" || \
                 success  "${DESCRIPTION}"
     done
