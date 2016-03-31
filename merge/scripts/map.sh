@@ -22,6 +22,8 @@ rm -f results.txt
 
 OPT="-t $THREADS -w 1 -O 50,50 -E 50,50 -L 50,50"
 
+echo -e "#Bacterium\tProgram\tPairs\tMerged\tOK\t%Merged\t%OK/Mgd\t%OK/All" >> $R
+
 for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
 
     case $name in
