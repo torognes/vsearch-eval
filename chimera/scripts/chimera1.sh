@@ -9,8 +9,8 @@ mkdir -p ./data ./results/{clust,derep}
 
 ## Get reference sequences
 REF="gold.fa"
-MD5="18cc0f774372410eccd6d64c97a2d297"
-check_status=$(cd ./data/ ; md5sum --status -c <<< "${MD5} ${REF}" ; echo $?)
+SHA1="744746b83a57b3475fb3fc958cb25a78e93db0bf"
+check_status=$(cd ./data/ ; shasum --status -c <<< "${SHA1}  ${REF}" ; echo $?)
 if [[ ! -e ./data/$REF || ${check_status} != 0 ]] ; then
     echo "Downloading reference database"
     wget -O ./data/${REF} http://drive5.com/uchime/${REF}

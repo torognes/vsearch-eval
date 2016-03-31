@@ -1,7 +1,7 @@
 #!/bin/bash -
 
 ## Check for dependencies first
-list="vsearch usearch usearch8 uchime pear bwa R perl wget awk bzip2 gzip md5sum"
+list="vsearch usearch usearch8 uchime pear bwa R perl wget awk bzip2 gzip shasum"
 for dependency in ${list} ; do
     if [[ ! $(which ${dependency}) ]] ; then
         echo "ERROR: could not find ${dependency}" 1>&2
