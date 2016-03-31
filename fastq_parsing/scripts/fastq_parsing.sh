@@ -39,12 +39,12 @@ DESCRIPTION="check if usearch8 is in the PATH"
 ## Download data (doi: 10.1093/nar/gkp1137), if not already present
 get_data () {
     DATASET="nar-02248-d-2009-File005.gz"
-    wget http://nar.oxfordjournals.org/content/suppl/2009/12/16/gkp1137.DC1/${DATASET}
-    tar zxvf ${DATASET}
+    wget -q http://nar.oxfordjournals.org/content/suppl/2009/12/16/gkp1137.DC1/${DATASET}
+    tar zxf ${DATASET}
     rm ${DATASET}
 }
-mkdir -p ../data
-cd ../data/ && [[ $(ls *.fastq) ]] || get_data
+mkdir -p data
+cd data && [[ $(ls *.fastq 2>/dev/null) ]] || get_data
 
 # --------------------------------------------------------------------- vsearch
 
