@@ -8,7 +8,7 @@ for M in even uneven; do
 
         for alg in cluster_fast cluster_smallmem; do
                 
-            for prog in usearch vsearch; do
+            for prog in usearch usearch8 vsearch; do
             
                 for F in results/$M/$M.shuffle_*.fasta.${prog}.$alg.*.uc.conf.txt.res.txt; do
                     base=$(basename $F)

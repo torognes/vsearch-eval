@@ -12,15 +12,16 @@ for s in 1 2 3 4 5 6 7 8 9 10; do
         
         scripts/makedb.sh $s
     
-        for n in u v; do
+        for n in usearch usearch8 vsearch; do
             scripts/eval.sh $n
         done
         
         Rscript scripts/plot.R
         mv results/curve.pdf $OUT
 
-        rm results/curve.u.txt
-        rm results/curve.v.txt
+        rm results/curve.usearch.txt
+        rm results/curve.usearch8.txt
+        rm results/curve.vsearch.txt
 
         rm results/qq.fsa
         rm results/db.fsa

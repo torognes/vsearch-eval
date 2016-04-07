@@ -8,38 +8,44 @@ ID=0.5
 MINSEQLENGTH=1
 MAXREJECTS=32
 
-USEARCH=$(which usearch)
-VSEARCH=$(which vsearch)
-
 mkdir -p $DIR
-
-if [ "$P" == "u" ]; then
-    PROG=$USEARCH
-else
-    if [ "$P" == "v" ]; then
-	PROG=$VSEARCH
-    else
-        if [ "$P" == "b" ]; then
-            PROG=blastall
-            MEGA=F
-        else
-            if [ "$P" == "m" ]; then
-                PROG=blastall
-                MEGA=T
-            else
-	        echo You must specify u, v, b or m as first argument
-	        exit
-            fi
-        fi
-    fi
-fi
 
 case $P in
 
-    b|m)
+    usearch|usearch8|vsearch)
+
+        PROG=$P
+
+        echo Running $PROG
         
-        echo Running Blast $MEGA
-        
+        /usr/bin/time $PROG \
+            --usearch_global $DIR/qq.fsa \
+            --db $DIR/db.fsa \
+            --minseqlength $MINSEQLENGTH \
+            --id $ID \
+            --maxaccepts 1 \
+            --maxrejects $MAXREJECTS \
+            --strand plus \
+            --threads $THREADS \
+            --userout $DIR/userout.$P.txt \
+            --userfields query+target+id+qcov
+        ;;
+
+    blast|megablast)
+
+        PROG=blastall
+
+        case $P in
+            blast)
+                echo Running Blast
+                MEGA=F
+                ;;
+            megablast)
+                echo Running MegaBlast
+                MEGA=T
+                ;;
+        esac
+
         /usr/bin/time $PROG \
             -p blastn \
             -n $MEGA \
@@ -56,24 +62,11 @@ case $P in
         scripts/blastfilter.pl $DIR/blastout.txt > $DIR/userout.$P.txt
 
         rm $DIR/blastout.txt
-        
         ;;
-    
-    u|v)
-        
-        echo Running ${P}search
-        
-        /usr/bin/time $PROG \
-            --usearch_global $DIR/qq.fsa \
-            --db $DIR/db.fsa \
-            --minseqlength $MINSEQLENGTH \
-            --id $ID \
-            --maxaccepts 1 \
-            --maxrejects $MAXREJECTS \
-            --strand plus \
-            --threads $THREADS \
-            --userout $DIR/userout.$P.txt \
-            --userfields query+target+id+qcov
+
+    *)
+	echo Please specify usearch, usearch8, vsearch, blast or megablast as first argument
+	exit
         ;;
 
 esac

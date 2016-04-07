@@ -7,11 +7,9 @@ library(gridExtra)
 
 z <- NULL
 
-#for (program in c("blast", "megablast", "usearch", "vsearch"))
-for (program in c("usearch", "vsearch"))
+for (program in c("usearch", "usearch8", "vsearch"))
   {
-    p <- substr(program, 1, 1)
-    fn <- paste0("results/curve.", p, ".txt")
+    fn <- paste0("results/curve.", program, ".txt")
     x <- read.table(fn)
     x$program <- program
     z = rbind(z, x)   

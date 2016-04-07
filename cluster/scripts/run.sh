@@ -11,9 +11,9 @@ for M in even uneven; do
     for F in results/$M/$M.shuffle_*.fasta; do
 
         for ID in $(seq -w $ID_MIN $ID_STEP $ID_MAX); do
-            
-            for P in usearch vsearch; do
-                
+
+            for P in usearch usearch8 vsearch; do
+
                 UC=$F.$P.cluster_fast.$ID.uc
 
                 if [ ! -e $UC ]; then
@@ -30,24 +30,31 @@ for M in even uneven; do
 
                     echo Clustering with $P at id $ID on $F
 
-                    if [ $P == "v" ]; then
-                        THROPT="--threads $THREADS"
-                    else
-                        THROPT=""
-                    fi
+                    case $P in
+                        usearch)
+                            /usr/bin/time $P --sortbysize $F --sizein --sizeout --output results/$M/temp.fasta
+                            /usr/bin/time $P --cluster_smallmem results/$M/temp.fasta --usersort --id 0.$ID --uc $UC
+                            ;;
 
-                    /usr/bin/time $P --sortbysize $F --sizein --sizeout --output results/$M/temp.fasta $THROPT
+                        usearch8)
+                            /usr/bin/time $P --sortbysize $F --fastaout results/$M/temp.fasta
+                            /usr/bin/time $P --cluster_smallmem results/$M/temp.fasta --sortedby size --id 0.$ID --uc $UC
+                            ;;
 
-                    /usr/bin/time $P --cluster_smallmem results/$M/temp.fasta --usersort --id 0.$ID --uc $UC $THROPT
+                        vsearch)
+                            /usr/bin/time $P --sortbysize $F --sizein --sizeout --output results/$M/temp.fasta --threads $THREADS
+                            /usr/bin/time $P --cluster_smallmem results/$M/temp.fasta --usersort --id 0.$ID --uc $UC --threads $THREADS
+                            ;;
+                    esac
 
                     rm results/$M/temp.fasta
-                
+
                 fi
 
             done
 
         done
-        
+
     done
 
 done

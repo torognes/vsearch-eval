@@ -16,11 +16,16 @@ for script in ./*/scripts/fastq_parsing.sh ; do
 done
 
 ## Some tests are not independent and must run in a specific order
+
 cd chimera
 ./scripts/chimera1.sh
 ./scripts/chimera2.sh
 cd ..
  
+cd search
+./scripts/search.sh
+cd ..
+
 cd cluster
 ./scripts/cluster.sh
 cd ..
