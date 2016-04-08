@@ -24,7 +24,8 @@ fi
 
 # Get reads from GAGE-B
 
-for name in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14; do
+#for name in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14; do
+for name in Staphylococcus_aureus Rhodobacter_sphaeroides; do
     for strand in 1 2; do
 
         F=${name}_$strand.fastq

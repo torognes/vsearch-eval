@@ -25,7 +25,7 @@ if [ ! -e $RES ]; then
             for p in usearch8 vsearch; do
 
                 $p --fastx_subsample $DATA \
-                    --randseed $SEED
+                    --randseed $SEED \
                     --sample_pct $f \
                     --sizein \
                     --sizeout \
