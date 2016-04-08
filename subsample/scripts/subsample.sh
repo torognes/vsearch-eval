@@ -16,6 +16,6 @@ fi
 
 if [ ! -e $PDF ]; then
 
-    Rscript ./scripts/plot.R $TSV $WIDTH
+    Rscript ./scripts/plot.R $TSV data/mean.tsv $WIDTH
 
 fi

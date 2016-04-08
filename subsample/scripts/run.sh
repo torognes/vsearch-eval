@@ -39,5 +39,3 @@ if [ ! -e $RES ]; then
     done
 
 fi
-
-#cat data/perfect.tsv >> $RES
