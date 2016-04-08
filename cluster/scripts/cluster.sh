@@ -34,27 +34,15 @@ echo Shuffle
 
 date
 
-echo Cluster
+echo Cluster, make confusion tables and evaluate
 
 ./scripts/run.sh
 
 date
 
-echo Create confusion tables
+echo Collect clustering metrics
 
-./scripts/confusion.sh
-
-date
-
-echo Compute metrics
-
-./scripts/metrics1.sh
-
-date
-
-echo Reformat metrics
-
-./scripts/metrics2.sh
+./scripts/metrics.sh
 
 date
 
