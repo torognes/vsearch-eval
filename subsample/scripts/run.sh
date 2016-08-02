@@ -4,12 +4,12 @@ THREADS=8
 
 mkdir -p results
 
-#BASE=TARA_V9_264_samples
-BASE=BioMarKs
+BASE=TARA_V9_264_samples
+#BASE=BioMarKs
 DATAGZ=data/$BASE.fsa.gz
 DATA=data/$BASE.fsa
 RES=results/$BASE.subsample.tsv
-REPLICATES=1000
+REPLICATES=10000
 
 if [ ! -e $DATA ]; then
     gunzip -c -d $DATAGZ > $DATA

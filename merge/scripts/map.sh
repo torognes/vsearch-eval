@@ -6,7 +6,8 @@ cd data
 
 
 
-for REF in GCA_000017085.1_ASM1708v1_genomic.fna.gz GCA_000273405.1_Rhod_Spha_2_4_1_V1_genomic.fna.gz mcbath.ref.fasta; do
+#for REF in GCA_000017085.1_ASM1708v1_genomic.fna.gz GCA_000273405.1_Rhod_Spha_2_4_1_V1_genomic.fna.gz mcbath.ref.fasta; do
+for REF in GCA_000017085.1_ASM1708v1_genomic.fna.gz mcbath.ref.fasta; do
     if [ ! -e $REF.sa ]; then
         bwa index $REF
     fi
@@ -24,7 +25,8 @@ OPT="-t $THREADS -w 1 -O 50,50 -E 50,50 -L 50,50"
 
 echo -e "#Bacterium\tProgram\tPairs\tMerged\tOK\t%Merged\t%OK/Mgd\t%OK/All" >> $R
 
-for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
+#for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
+for name in Staphylococcus_aureus mcbath; do
 
     case $name in
 
@@ -41,7 +43,8 @@ for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
             ;;
     esac
 
-    for P in usearch usearch8 vsearch PEAR; do
+#    for P in usearch usearch8 vsearch PEAR; do
+    for P in usearch usearch8 vsearch; do
         OUT=$name.merged.$P.sam
         if [ ! -e $OUT ]; then
             echo Mapping $name.merged.$P.fastq against $REF

@@ -10,7 +10,8 @@ mkdir -p results
 #for name in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14 mcbath; do
 for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
 
-    for P in usearch usearch8 vsearch PEAR; do
+#    for P in usearch usearch8 vsearch PEAR; do
+    for P in usearch usearch8 vsearch; do
         
         R1=data/${name}_1.fastq
         R2=data/${name}_2.fastq
