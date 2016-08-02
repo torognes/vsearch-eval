@@ -41,13 +41,6 @@ for t in - m1 m2 m3 m4 m5 i1 i2 i3 i4 i5; do
         $UCHIME --input $INPUT --db $DB --uchimeout $RES/o.$t.uchimeout --minh 0.28 --mindiv 0.8 ; grep Y$ $RES/o.$t.uchimeout | cut -f2 > $RES/o.$t.chimeras
     fi
 
-    if [ ! -e $RES/v.$t.chimeras ]; then
-        echo
-        echo Running vsearch on dataset $t
-        echo
-        $VSEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/v.$t.chimeras --threads $THREADS
-    fi
-
     if [ ! -e $RES/u.$t.chimeras ]; then
         echo
         echo Running usearch on dataset $t
@@ -62,6 +55,13 @@ for t in - m1 m2 m3 m4 m5 i1 i2 i3 i4 i5; do
         $USEARCH8 --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/u8.$t.chimeras --threads $THREADS
     fi
 
+    if [ ! -e $RES/v.$t.chimeras ]; then
+        echo
+        echo Running vsearch on dataset $t
+        echo
+        $VSEARCH --uchime_ref $INPUT --db $DB --strand plus --chimeras $RES/v.$t.chimeras --threads $THREADS
+    fi
+
 done
 
 if [ ! -e $OUT ]; then
@@ -69,18 +69,18 @@ if [ ! -e $OUT ]; then
     echo
     echo -e  "\t______________m=2______________\t______________m=3______________\t______________m=4______________" > $OUT
     echo -ne "Div/Evo" >> $OUT
-    echo -ne "\tUSEARCH\tUSEARC8\tUCHIME\tVSEARCH" >> $OUT
-    echo -ne "\tUSEARCH\tUSEARC8\tUCHIME\tVSEARCH" >> $OUT
-    echo -e  "\tUSEARCH\tUSEARC8\tUCHIME\tVSEARCH" >> $OUT
+    echo -ne "\tUCHIME\tU7\tU8\tVSEARCH" >> $OUT
+    echo -ne "\tUCHIME\tU7\tU8\tVSEARCH" >> $OUT
+    echo -e  "\tUCHIME\tU7\tU8\tVSEARCH" >> $OUT
 
     for r in 97_99 95_97 90_95; do
         for t in - i1 i2 i3 i4 i5 m1 m2 m3 m4 m5; do
             EXT="$t.chimeras"
             echo -ne "$r$t" >> $OUT
             for m in 2 3 4; do
+                echo -ne "\t$(grep -c _m${m}_${r} $RES/o.$EXT)" >> $OUT
                 echo -ne "\t$(grep -c _m${m}_${r} $RES/u.$EXT)" >> $OUT
                 echo -ne "\t$(grep -c _m${m}_${r} $RES/u8.$EXT)" >> $OUT
-                echo -ne "\t$(grep -c _m${m}_${r} $RES/o.$EXT)" >> $OUT
                 echo -ne "\t$(grep -c _m${m}_${r} $RES/v.$EXT)" >> $OUT
             done
             echo >> $OUT
