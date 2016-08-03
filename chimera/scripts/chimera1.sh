@@ -26,7 +26,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
 
                 usearch \
                     --cluster_fast data/$D.fa \
-                    --id 0.95 \
+                    --id 0.97 \
                     --sizeout \
                     --threads $THREADS \
                     --centroids results/$n/${D}_clust.fa
