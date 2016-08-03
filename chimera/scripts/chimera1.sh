@@ -57,6 +57,7 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
 
                 BASE=results/$n/${D}_${n}_${p}_${m}
                 RES=$BASE.uchime
+                LOG=$BASE.log
 
                 if [ ! -e $RES ]; then
 
@@ -72,7 +73,8 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                             $p --uchime_denovo results/$n/${D}_${n}.fa \
                             --strand plus \
                             --uchimeout $RES \
-                            $THROPT
+                            $THROPT \
+                            > $LOG 2>&1
                         
                     else
                         
@@ -81,7 +83,8 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                             --strand plus \
                             --db data/$REF \
                             --threads $THREADS \
-                            --uchimeout $RES
+                            --uchimeout $RES \
+                            > $LOG 2>&1
                         
                     fi
                     
@@ -96,7 +99,8 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                 fi
 
                 if [ ! -e $BASE.roc ]; then
-                    perl scripts/roc.pl $BASE.sorteduchime > $BASE.roc
+#                    perl scripts/roc.pl $BASE.sorteduchime > $BASE.roc
+                    perl scripts/roc2.pl $BASE.sorteduchime > $BASE.roc
                 fi
 
             done
