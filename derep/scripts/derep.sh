@@ -7,7 +7,7 @@ mkdir -p data results
 
 for M in even uneven; do
 
-    Z=data/$M.fsa.bz2
+    Z=data/$M.fasta.bz2
     F=data/$M.fasta
 
     if [ ! -e $F ]; then
@@ -37,47 +37,44 @@ if [ ! -e $F ]; then
         echo Copying dataset $M
         cp -a ../subsample/$Z $Z
     fi
-    
+
     echo Decompressing
     gunzip -c $Z > $F
-    
+
 fi
 
 for D in derep_fulllength derep_prefix; do
-    
-    for P in usearch usearch8 vsearch; do
-        
-        for M in even uneven BioMarKs; do
-            
+
+    for M in even uneven BioMarKs; do
+
+        for P in vsearch usearch usearch8; do
+
             echo Running $D with $P on $M dataset
 
             for R in $(seq -w 1 $REP); do
-            
+
                 OUT=results/temp.derep.fasta
                 LOG=results/$M.$P.$D.$R.log
 
                 if [ ! -e $LOG ]; then
 
                     case $P in
-                        
+
                         usearch|vsearch)
-                        /usr/bin/time $P --$D data/$M.fasta --output $OUT --sizeout --threads $T > $LOG 2>&1
+                        /usr/bin/time -p $P --$D data/$M.fasta --output $OUT --sizeout --threads $THREADS > $LOG 2>&1
                         ;;
 
                         usearch8)
-                        /usr/bin/time $P --$D data/$M.fasta --fastaout $OUT --sizeout --threads $T > $LOG 2>&1
+                        /usr/bin/time -p $P --$D data/$M.fasta --fastaout $OUT --sizeout --threads $THREADS > $LOG 2>&1
                         ;;
 
                     esac
 
                 fi
-                
-                echo $(tail -1 $LOG | cut -c1-12)
+
+                echo $(tail -3 $LOG | grep real | cut -c5-)
 
             done
-            
         done
-
     done
-
 done
