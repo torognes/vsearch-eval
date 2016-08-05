@@ -19,6 +19,7 @@ for M in even uneven; do
                 UC=$F.$P.cluster_fast.$ID.uc
                 CONF=$UC.conf.txt
                 RES=$CONF.res.txt
+                LOG=$F.$P.cluster_fast.$ID.log
 
                 if [ ! -e $RES ]; then
 
@@ -30,7 +31,8 @@ for M in even uneven; do
                             
                             /usr/bin/time $P \
                                 --cluster_fast $F --id 0.$ID \
-                                --uc $UC --threads $THREADS
+                                --uc $UC --threads $THREADS \
+                                > $LOG 2>&1
                             
                         fi
                         
@@ -48,6 +50,7 @@ for M in even uneven; do
                 UC=$F.$P.cluster_smallmem.$ID.uc
                 CONF=$UC.conf.txt
                 RES=$CONF.res.txt
+                LOG=$$F.$P.cluster_smallmem.$ID.log
 
                 if [ ! -e $RES ]; then
 
@@ -66,7 +69,8 @@ for M in even uneven; do
                                         --output $TEMPFASTA
                                     /usr/bin/time $P \
                                         --cluster_smallmem $TEMPFASTA \
-                                        --usersort --id 0.$ID --uc $UC
+                                        --usersort --id 0.$ID --uc $UC \
+                                    > $LOG 2>&1
                                     ;;
                                 
                                 usearch8)
@@ -74,7 +78,8 @@ for M in even uneven; do
                                         --fastaout $TEMPFASTA
                                     /usr/bin/time $P \
                                         --cluster_smallmem $TEMPFASTA \
-                                        --sortedby size --id 0.$ID --uc $UC
+                                        --sortedby size --id 0.$ID --uc $UC \
+                                        > $LOG 2>&1
                                     ;;
                                 
                                 vsearch)
@@ -85,7 +90,8 @@ for M in even uneven; do
                                     /usr/bin/time $P \
                                         --cluster_smallmem $TEMPFASTA \
                                         --usersort --id 0.$ID --uc $UC \
-                                        --threads $THREADS
+                                        --threads $THREADS \
+                                        > $LOG 2>&1
                                     ;;
                             esac
                             
