@@ -118,6 +118,23 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
 
 done
 
+echo "Timing (usearch7, usearch8, vsearch)"
+
+for m in dn ref ; do
+
+    echo $m
+
+#    for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
+    for D in SILVA_Illumina GG_Illumina ; do
+        for n in clust derep ; do
+            U7=$(tail -1 results/$n/${D}_${n}_usearch_$m.log  | grep real | cut -c1-12)
+            U8=$(tail -1 results/$n/${D}_${n}_usearch8_$m.log | grep real | cut -c1-12)
+            V=$(tail  -1 results/$n/${D}_${n}_vsearch_$m.log  | grep real | cut -c1-12)
+        done
+        echo $U7 $U8 $V
+    done
+done
+
 echo Done
 
 exit 0
