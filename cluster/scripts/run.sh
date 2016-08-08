@@ -37,7 +37,6 @@ for M in even uneven; do
                         fi
                         
                         ./scripts/uc2confusiontable.pl $TAXFILE $UC > $CONF
-                        rm $UC
 
                     fi
 
@@ -100,7 +99,6 @@ for M in even uneven; do
                         fi
                         
                         ./scripts/uc2confusiontable.pl $TAXFILE $UC > $CONF
-                        rm $UC
                         
                     fi
                     
