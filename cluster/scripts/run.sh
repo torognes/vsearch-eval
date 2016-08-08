@@ -27,7 +27,7 @@ for M in even uneven; do
                         
                         if [ ! -e $UC ]; then
                             
-                            echo Clustering (fast) with $P at id $ID on $F
+                            echo "Clustering (fast) with $P at id $ID on $F"
                             
                             /usr/bin/time -p $P \
                                 --cluster_fast $F --id 0.$ID \
@@ -58,7 +58,7 @@ for M in even uneven; do
                         
                         if [ ! -e $UC ]; then
 
-                            echo Clustering (smallmem) with $P at id $ID on $F
+                            echo "Clustering (smallmem) with $P at id $ID on $F"
                             
                             TEMPFASTA=results/$M/temp.fasta
 
