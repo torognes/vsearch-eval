@@ -27,9 +27,9 @@ for M in even uneven; do
                         
                         if [ ! -e $UC ]; then
                             
-                            echo Clustering with $P at id $ID on $F
+                            echo Clustering (fast) with $P at id $ID on $F
                             
-                            /usr/bin/time $P \
+                            /usr/bin/time -p $P \
                                 --cluster_fast $F --id 0.$ID \
                                 --uc $UC --threads $THREADS \
                                 > $LOG 2>&1
@@ -50,7 +50,7 @@ for M in even uneven; do
                 UC=$F.$P.cluster_smallmem.$ID.uc
                 CONF=$UC.conf.txt
                 RES=$CONF.res.txt
-                LOG=$$F.$P.cluster_smallmem.$ID.log
+                LOG=$F.$P.cluster_smallmem.$ID.log
 
                 if [ ! -e $RES ]; then
 
@@ -58,13 +58,13 @@ for M in even uneven; do
                         
                         if [ ! -e $UC ]; then
 
-                            echo Clustering with $P at id $ID on $F
+                            echo Clustering (smallmem) with $P at id $ID on $F
                             
                             TEMPFASTA=results/$M/temp.fasta
 
                             case $P in
                                 usearch)
-                                    /usr/bin/time $P --sortbysize $F \
+                                    /usr/bin/time -p $P --sortbysize $F \
                                         --sizein --sizeout \
                                         --output $TEMPFASTA
                                     /usr/bin/time $P \
@@ -74,7 +74,7 @@ for M in even uneven; do
                                     ;;
                                 
                                 usearch8)
-                                    /usr/bin/time $P --sortbysize $F \
+                                    /usr/bin/time -p $P --sortbysize $F \
                                         --fastaout $TEMPFASTA
                                     /usr/bin/time $P \
                                         --cluster_smallmem $TEMPFASTA \
@@ -83,11 +83,11 @@ for M in even uneven; do
                                     ;;
                                 
                                 vsearch)
-                                    /usr/bin/time $P --sortbysize $F \
+                                    /usr/bin/time -p $P --sortbysize $F \
                                         --sizein --sizeout \
                                         --output $TEMPFASTA \
                                         --threads $THREADS
-                                    /usr/bin/time $P \
+                                    /usr/bin/time -p $P \
                                         --cluster_smallmem $TEMPFASTA \
                                         --usersort --id 0.$ID --uc $UC \
                                         --threads $THREADS \
