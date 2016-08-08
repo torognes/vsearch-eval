@@ -67,7 +67,7 @@ for M in even uneven; do
                                     /usr/bin/time -p $P --sortbysize $F \
                                         --sizein --sizeout \
                                         --output $TEMPFASTA
-                                    /usr/bin/time $P \
+                                    /usr/bin/time -p $P \
                                         --cluster_smallmem $TEMPFASTA \
                                         --usersort --id 0.$ID --uc $UC \
                                     > $LOG 2>&1
@@ -76,7 +76,7 @@ for M in even uneven; do
                                 usearch8)
                                     /usr/bin/time -p $P --sortbysize $F \
                                         --fastaout $TEMPFASTA
-                                    /usr/bin/time $P \
+                                    /usr/bin/time -p $P \
                                         --cluster_smallmem $TEMPFASTA \
                                         --sortedby size --id 0.$ID --uc $UC \
                                         > $LOG 2>&1
