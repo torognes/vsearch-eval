@@ -38,3 +38,5 @@ done
 Rscript scripts/plot.R
 mv results/curve.pdf results/curve.all.pdf
 rm results/qq.fsa
+
+scripts/time.sh

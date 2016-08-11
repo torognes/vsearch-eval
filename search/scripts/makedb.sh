@@ -8,8 +8,8 @@ fi
 
 echo Using seed $SEED
 
-#Change REPLICATES to 1000 for timing
-REPLICATES=1
+#Change REPLICATES to 1 for testing to save time
+REPLICATES=1000
 DIR=results
 DB=data/Rfam_11_0.fasta
 
