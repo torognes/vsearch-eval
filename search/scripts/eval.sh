@@ -1,6 +1,7 @@
 #!/bin/bash
 
 P=$1
+S=$2
 
 THREADS=8
 DIR=results
@@ -10,15 +11,17 @@ MAXREJECTS=32
 
 mkdir -p $DIR
 
+date
+
+echo Running $P
+
 case $P in
 
     usearch|usearch8|vsearch)
 
         PROG=$P
 
-        echo Running $PROG
-        
-        /usr/bin/time $PROG \
+        /usr/bin/time -p $PROG \
             --usearch_global $DIR/qq.fsa \
             --db $DIR/db.fsa \
             --minseqlength $MINSEQLENGTH \
@@ -28,7 +31,8 @@ case $P in
             --strand plus \
             --threads $THREADS \
             --userout $DIR/userout.$P.txt \
-            --userfields query+target+id+qcov
+            --userfields query+target+id+qcov \
+            > $DIR/log.$P.$S.txt 2>&1
         ;;
 
     blast|megablast)
@@ -46,7 +50,7 @@ case $P in
                 ;;
         esac
 
-        /usr/bin/time $PROG \
+        /usr/bin/time -p $PROG \
             -p blastn \
             -n $MEGA \
             -d $DIR/db \
@@ -71,9 +75,12 @@ case $P in
 
 esac
 
+date
+
 echo Sort
 
-sort -nr -k3 $DIR/userout.$P.txt > $DIR/sortout.$P.txt
+sort -nr -k3,3 $DIR/userout.$P.txt > $DIR/sortout.$P.txt
+cp $DIR/sortout.$P.txt $DIR/sortout.$P.$S.txt 
 
 echo Results
 
@@ -81,4 +88,7 @@ GOLD=$(grep -c "^>" $DIR/qq.fsa)
 
 ./scripts/stats.pl $GOLD $DIR/sortout.$P.txt $DIR/curve.$P.txt
 
-rm $DIR/userout.$P.txt $DIR/sortout.$P.txt
+rm $DIR/userout.$P.txt
+#rm $DIR/sortout.$P.txt
+
+date

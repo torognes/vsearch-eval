@@ -1,7 +1,7 @@
 #!/bin/bash
 
 THREADS=8
-REPLICATES=2
+REPLICATES=10
 
 for i in $(seq -w $REPLICATES); do
 

@@ -30,7 +30,7 @@ d5$order <- factor(d5$order,
 
 # Faceted plot using median values
 ggplot(d5, aes(x = id, y = value, col = program )) +
-        geom_point(size = 3) +
+        geom_point(size = 1.5) +
         labs(x = "identity (%)", y = "metric value") +
         facet_grid(metric ~ order, scales = "free_y", space = "fixed") +
         scale_x_continuous(breaks = seq(81, 99, by = 2)) +
@@ -52,7 +52,7 @@ d6$order <- factor(d6$order,
 
 # Faceted plot using median values
 ggplot(d6, aes(x = id, y = value, col = program )) +
-        geom_point(size = 3) +
+        geom_point(size = 1.5) +
         labs(x = "identity (%)", y = "clusters") +
         facet_grid(. ~ order, scales = "free_y", space = "fixed") +
         scale_x_continuous(breaks = seq(81, 99, by = 2)) +

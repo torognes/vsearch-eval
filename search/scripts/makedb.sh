@@ -8,7 +8,8 @@ fi
 
 echo Using seed $SEED
 
-REPLICATES=10
+#Change REPLICATES to 1000 for timing
+REPLICATES=1
 DIR=results
 DB=data/Rfam_11_0.fasta
 
@@ -27,7 +28,8 @@ rm $DIR/temp.fsa
 echo Creating replicate queries
 
 rm -f $DIR/qq.fsa
-for i in seq 1 $REPLICATES; do
+for i in $(seq 1 $REPLICATES); do
+    echo -n "$i "
     cat $DIR/q.fsa >> $DIR/qq.fsa
 done
 

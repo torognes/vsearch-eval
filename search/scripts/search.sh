@@ -4,7 +4,10 @@
 
 mkdir -p results
 
-for s in 1 2 3 4 5 6 7 8 9 10; do
+PROGRAMS="usearch usearch8 vsearch"
+REPEATS=20
+
+for s in $(seq 1 $REPEATS); do
 
     OUT=results/curve.s$s.pdf
     
@@ -12,8 +15,8 @@ for s in 1 2 3 4 5 6 7 8 9 10; do
         
         scripts/makedb.sh $s
     
-        for n in usearch usearch8 vsearch; do
-            scripts/eval.sh $n
+        for n in $PROGRAMS; do
+            scripts/eval.sh $n $s
         done
         
         Rscript scripts/plot.R
@@ -22,10 +25,16 @@ for s in 1 2 3 4 5 6 7 8 9 10; do
         rm results/curve.usearch.txt
         rm results/curve.usearch8.txt
         rm results/curve.vsearch.txt
-
-        rm results/qq.fsa
         rm results/db.fsa
 
     fi
     
 done
+
+for n in $PROGRAMS; do
+    scripts/evalall.sh $n $REPEATS
+done
+
+Rscript scripts/plot.R
+mv results/curve.pdf results/curve.all.pdf
+rm results/qq.fsa
