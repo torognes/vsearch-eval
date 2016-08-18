@@ -8,13 +8,15 @@ mkdir -p ./data ./results/{clust,derep}
 ## Get reference sequences
 REF="gold.fa"
 SHA1="744746b83a57b3475fb3fc958cb25a78e93db0bf"
-check_status=$(cd ./data/ ; shasum --status -c <<< "${SHA1}  ${REF}" ; echo $?)
+check_status=$(cd ./data/ ; echo "$SHA1  $REF" > shasum.txt ; shasum --status --check shasum.txt ; echo $?)
 if [[ ! -e ./data/$REF || ${check_status} != 0 ]] ; then
     echo "Downloading reference database"
     wget -O ./data/${REF} http://drive5.com/uchime/${REF}
 fi
 
 for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
+
+    echo Processing dataset $D
 
     for n in clust derep ; do
         

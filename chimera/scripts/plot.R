@@ -5,6 +5,9 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
+# sky blue, orange, dark grey
+cbbPalette <- c("#56B4E9", "#E69F00", "#444444")
+
 args <- commandArgs(trailingOnly = TRUE)
 ds <- args[1]
 
@@ -29,13 +32,19 @@ for(pre in c("derep", "clust"))
 
 colnames(z) <- c("fpr", "tpr", "pre", "program", "algo")
 
-y = ggplot(z, aes(x=fpr, y=tpr, color = program)) +
-  geom_line() +
-  labs(x = "False Positive Rate", y = "True Positive Rate") +
-  xlim(0, 0.01) +
-  ylim(0, 1.00) +
-  facet_grid(algo ~ pre)
+pre_names <- c('derep'="dereplicated", 'clust'="clustered at 97%")
+algo_names <- c('dn'="de novo", 'ref'="reference-based")
 
-ggsave(file = paste0("results/", ds, ".pdf"), width=10, height=8, y)
+y = ggplot(z, aes(x=fpr, y=tpr, color = program)) +
+ geom_line() +
+ labs(x = "False Positive Rate", y = "True Positive Rate") +
+ xlim(0, 0.01) +
+ ylim(0, 1.00) +
+ facet_grid(algo ~ pre, labeller=labeller(pre=pre_names, algo=algo_names)) +
+ theme(legend.position = c(0.93, 0.93), legend.title=element_blank()) +
+ scale_colour_manual(values=cbbPalette, 
+  labels=c("usearch 7", "usearch 8", "vsearch"))
+
+ggsave(file = paste0("results/", ds, ".pdf"), width=8, height=8, y)
 
 quit(save = "no")

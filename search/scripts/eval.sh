@@ -86,9 +86,11 @@ echo Results
 
 GOLD=$(grep -c "^>" $DIR/qq.fsa)
 
-./scripts/stats.pl $GOLD $DIR/sortout.$P.txt $DIR/curve.$P.txt
+./scripts/stats.pl $GOLD $DIR/sortout.$P.txt $DIR/stats.$P.txt 
+uniq $DIR/stats.$P.txt > $DIR/curve.$P.txt
 
 rm $DIR/userout.$P.txt
 #rm $DIR/sortout.$P.txt
+#rm $DIR/stats.$P.txt
 
 date

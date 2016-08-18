@@ -52,4 +52,16 @@ echo Plot
 
 date
 
+echo Collect timing info
+
+./scripts/time.sh
+
+date
+
+echo Plot timing
+
+Rscript scripts/timeplot.R
+
+date
+
 echo Done
