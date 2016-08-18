@@ -9,7 +9,7 @@ Scripts and data for evaluation of VSEARCH performance
 * UCHIME http://drive5.com/uchime/uchime_download.html
 * PEAR (PEAR) https://github.com/xflouris/PEAR
 * bwa
-* R
+* R (and packages ggplot2, grid, gridExtra, methods, reshape)
 * Perl
 * wget
 * awk
