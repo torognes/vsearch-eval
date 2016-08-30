@@ -18,9 +18,10 @@ USEARCH8=$(which usearch8)
 DESCRIPTION="usearch binary not found"
 [[ "${USEARCH8}" ]] || failure "${DESCRIPTION}"
 
-## Get data (check first)
+## Preparation (check first)
+RESULTS="../results"
 DATA="../data"
-mkdir -p "${DATA}"
+mkdir -p "${DATA}" "${RESULTS}"
 FASTA="TARA_V9_264_samples.fas"
 URL="https://elwe.rhrk.uni-kl.de/outgoing/${FASTA}"
 [[ -s "${DATA}/${FASTA}" ]] || (cd ${DATA}/ ; wget "${URL}")
@@ -37,19 +38,22 @@ ${VSEARCH} \
     --sizeout > /dev/null
 NOMINAL_SIZE=$(head -n 1 "${INPUT}" | cut -d "=" -f 2  | tr -d ";")
 
-## Subsample 10,000 times with vsearch and usearch
+## Subsample 10,000 times with vsearch and usearch8
 TMP_FASTA=$(mktemp)
-for PERCENTAGE in 1 5 10 20 50 ; do
-    LOG="${TARA/.fas/.subsample}_${PERCENTAGE/.0/_head}.log"
-    for i in {1..10000} ; do
+REPEATS=10000
+for PERCENTAGE in 1 5 15 25 50 ; do
+    LOG="${RESULTS}/${FASTA/.fas/.subsample}_${PERCENTAGE}_head.log"
+    echo -e "percentage\tnominal_size\tseed\tsize_vsearch\tsize_usearch8" > ${LOG}
+    for ((i=1; i<=REPEATS; i++)) ; do
+        echo "loop ${PERCENTAGE}%: ${i}/${REPEATS}"
         ${VSEARCH} \
             --fastx_subsample "${INPUT}" \
             --fastaout "${TMP_FASTA}" \
             --randseed "${i}" \
             --sample_pct "${PERCENTAGE}" \
             --sizein \
-            --sizeout > /dev/null
-
+            --sizeout \
+            --quiet 2> /dev/null
         SIZE_VSEARCH=$(head -n 1 "${TMP_FASTA}" | cut -d "=" -f 2 | tr -d ";")
 
         ${USEARCH8} \
@@ -58,16 +62,17 @@ for PERCENTAGE in 1 5 10 20 50 ; do
             -randseed "${i}" \
             -sample_pct "${PERCENTAGE}" \
             -sizein \
-            -sizeout > /dev/null
-
+            -sizeout \
+            -quiet
         SIZE_USEARCH8=$(head -n 1 "${TMP_FASTA}" | cut -d "=" -f 2 | tr -d ";")
 
-        echo -e "${PERCENTAGE}\t${NOMINAL_SIZE}\t${SEED}\t${SIZE_VSEARCH}\t${SIZE_USEARCH8}"
-    done >> ${LOG}
+        echo -e "${PERCENTAGE}\t${NOMINAL_SIZE}\t${i}\t${SIZE_VSEARCH}\t${SIZE_USEARCH8}" >> ${LOG}
+    done
 done
-    
+
 rm "${TMP_FASTA}" "${INPUT}"
 
-exit 0
+## Produce plots
+Rscript --vanilla plot.R
 
-## TODO produce plot (launch a R script, that R script is going to check for dependencies)
+exit 0
