@@ -14,7 +14,8 @@ if [[ ! -e ./data/$REF || ${check_status} != 0 ]] ; then
     wget -O ./data/${REF} http://drive5.com/uchime/${REF}
 fi
 
-for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
+#for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
+for D in SILVA_Illumina GG_Illumina ; do
 
     echo Processing dataset $D
 
@@ -101,7 +102,6 @@ for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
                 fi
 
                 if [ ! -e $BASE.roc ]; then
-#                    perl scripts/roc.pl $BASE.sorteduchime > $BASE.roc
                     perl scripts/roc2.pl $BASE.sorteduchime > $BASE.roc
                 fi
 

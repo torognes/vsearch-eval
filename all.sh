@@ -11,7 +11,7 @@ done
 
 # Run checks
 
-cd fastq_paring
+cd fastq_parsing
 ./scripts/fastq_parsing.sh
 cd ..
 
