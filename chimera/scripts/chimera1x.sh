@@ -13,7 +13,7 @@ SHA1="744746b83a57b3475fb3fc958cb25a78e93db0bf"
 check_status=$(cd ./data/ ; shasum --status -c <<< "${SHA1}  ${REF}" ; echo $?)
 if [[ ! -e ./data/$REF || ${check_status} != 0 ]] ; then
     echo "Downloading reference database"
-    wget -O ./data/${REF} http://drive5.com/uchime/${REF}
+    wget -nv -O ./data/${REF} http://drive5.com/uchime/${REF}
 fi
 
 #for D in SILVA_Illumina SILVA_noisefree GG_Illumina GG_noisefree ; do
@@ -58,7 +58,7 @@ for D in SILVA_Illumina GG_Illumina ; do
                             THROPT=""
                         fi
                         
-                        /usr/bin/time \
+                        /usr/bin/time -p \
                             $p --uchime_denovo results/$n/${D}_$n.fa \
                             --strand plus \
                             --uchimeout $RES \
@@ -67,7 +67,7 @@ for D in SILVA_Illumina GG_Illumina ; do
                         
                     else
                         
-                        /usr/bin/time \
+                        /usr/bin/time -p \
                             $p --uchime_ref results/$n/${D}_${n}.fa \
                             --strand plus \
                             --db data/$REF \

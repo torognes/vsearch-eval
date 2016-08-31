@@ -54,7 +54,7 @@ date
 
 echo Collect timing info
 
-./scripts/time.sh
+./scripts/time.sh > results/timing.txt
 
 date
 

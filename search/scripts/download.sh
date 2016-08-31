@@ -9,7 +9,7 @@ if [ ! -e data/Rfam_11_0.fasta ]; then
 
     echo Downloading dataset
     
-    wget ftp://ftp.ebi.ac.uk/pub/databases/Rfam/11.0/Rfam.fasta.gz
+    wget -nv ftp://ftp.ebi.ac.uk/pub/databases/Rfam/11.0/Rfam.fasta.gz
 
     gunzip Rfam.fasta.gz
     

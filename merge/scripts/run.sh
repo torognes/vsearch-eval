@@ -8,9 +8,8 @@ MINHSP=$MINOVLEN
 mkdir -p results
 
 #for name in Staphylococcus_aureus Rhodobacter_sphaeroides Hg_chr14 mcbath; do
-for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
+for name in Staphylococcus_aureus mcbath; do
 
-#    for P in usearch usearch8 vsearch PEAR; do
     for P in usearch usearch8 vsearch; do
         
         R1=data/${name}_1.fastq
@@ -24,7 +23,7 @@ for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
 
             if [ $P == "PEAR" ]; then
 
-                cmd="/usr/bin/time $P \
+                cmd="/usr/bin/time -p $P \
                   --forward-fastq $R1 --reverse-fastq $R2 --output $G \
                   --min-overlap $MINOVLEN \
                   --threads $THREADS"
@@ -38,7 +37,7 @@ for name in Staphylococcus_aureus Rhodobacter_sphaeroides mcbath; do
                 
             else
                 
-                cmd="/usr/bin/time $P \
+                cmd="/usr/bin/time -p $P \
                       --fastq_mergepairs $R1 --reverse $R2 --fastqout $F \
                       --fastq_minovlen $MINOVLEN --fastq_maxdiffs $MAXDIFFS \
                       --threads $THREADS --minhsp $MINHSP"

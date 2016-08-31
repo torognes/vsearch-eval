@@ -21,7 +21,7 @@ if [ ! -e $DB ]; then
     mkdir -p data
     cd data
     echo Downloading SIMM dataset
-    wget http://www.drive5.com/uchime/simm.tar.gz
+    wget -nv http://www.drive5.com/uchime/simm.tar.gz
     tar xzf simm.tar.gz
     cd ..
 fi

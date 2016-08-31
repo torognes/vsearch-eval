@@ -12,9 +12,7 @@ runs <- list(list("source" = "1", "percentage" = "0.1", "divider" = 1),
 
 subsampling_plots <- function(arg) {
     ## Load data
-    setwd("../results/")
-    
-    input <- paste("TARA_V9_264_samples.subsample_", run$source, "_head.log", sep = "")
+    input <- paste("results/TARA_V9_264_samples.subsample_", run$source, "_head.log", sep = "")
 
     ## Import and format data
     d <- read.table(input, sep = "\t", header = TRUE, dec = ".")

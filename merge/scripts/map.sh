@@ -43,7 +43,6 @@ for name in Staphylococcus_aureus mcbath; do
             ;;
     esac
 
-#    for P in usearch usearch8 vsearch PEAR; do
     for P in usearch usearch8 vsearch; do
         OUT=$name.merged.$P.sam
         if [ ! -e $OUT ]; then

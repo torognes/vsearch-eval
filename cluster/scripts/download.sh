@@ -10,7 +10,7 @@ for M in even uneven; do
 
         echo Downloading dataset $M
 
-        wget http://sbr2.sb-roscoff.fr/download/externe/de/fmahe/$M.fasta.bz2
+        wget -nv http://sbr2.sb-roscoff.fr/download/externe/de/fmahe/$M.fasta.bz2
 
     fi
 

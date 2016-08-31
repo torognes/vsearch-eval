@@ -19,12 +19,12 @@ DESCRIPTION="usearch binary not found"
 [[ "${USEARCH8}" ]] || failure "${DESCRIPTION}"
 
 ## Preparation (check first)
-RESULTS="../results"
-DATA="../data"
+RESULTS="results"
+DATA="data"
 mkdir -p "${DATA}" "${RESULTS}"
 FASTA="TARA_V9_264_samples.fas"
 URL="https://elwe.rhrk.uni-kl.de/outgoing/${FASTA}"
-[[ -s "${DATA}/${FASTA}" ]] || (cd ${DATA}/ ; wget "${URL}")
+[[ -s "${DATA}/${FASTA}" ]] || (cd ${DATA}/ ; wget -nv "${URL}")
 
 ## Subsample once to avoid usearch memory limit
 INITIAL_PERCENTAGE="10.0"
@@ -73,6 +73,6 @@ done
 rm "${TMP_FASTA}" "${INPUT}"
 
 ## Produce plots
-Rscript --vanilla plot.R
+Rscript --vanilla scripts/plot.R
 
 exit 0

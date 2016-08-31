@@ -15,7 +15,7 @@ for M in even uneven; do
         if [ ! -e $Z ]; then
             echo Downloading dataset $M
             cd data
-            wget http://sbr2.sb-roscoff.fr/download/externe/de/fmahe/$M.fasta.bz2
+            wget -nv http://sbr2.sb-roscoff.fr/download/externe/de/fmahe/$M.fasta.bz2
             cd ..
         fi
 
@@ -28,18 +28,13 @@ done
 
 M=BioMarKs
 
-Z=data/$M.fsa.gz
+Z=data/$M.fasta.bz2
 F=data/$M.fasta
 
 if [ ! -e $F ]; then
 
-    if [ ! -e $Z ]; then
-        echo Copying dataset $M
-        cp -a ../subsample/$Z $Z
-    fi
-
     echo Decompressing
-    gunzip -c $Z > $F
+    bunzip2 -c $Z > $F
 
 fi
 
