@@ -9,13 +9,11 @@ for dependency in ${list} ; do
     fi
 done
 
-## Run independent tests first
-for script in ./*/scripts/fastq_parsing.sh ; do
-    echo "Run $(basename ${script})"
-    (cd ${script/scripts*/} ; bash ${script/*scripts/\.\/scripts})
-done
+# Run checks
 
-## Some tests are not independent and must run in a specific order
+cd fastq_paring
+./scripts/fastq_parsing.sh
+cd ..
 
 cd chimera
 ./scripts/chimera1.sh
@@ -31,11 +29,15 @@ cd cluster
 cd ..
 
 cd subsample
-./scripts/subsample.sh
+./scripts/run.sh
 cd ..
 
 cd merge
 ./scripts/merge.sh
+cd ..
+
+cd derep
+./scripts/derep.sh
 cd ..
 
 exit 0
