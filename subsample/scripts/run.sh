@@ -73,6 +73,6 @@ done
 rm "${TMP_FASTA}" "${INPUT}"
 
 ## Produce plots
-Rscript --vanilla scripts/plot.R
+Rscript scripts/plot.R
 
 exit 0
